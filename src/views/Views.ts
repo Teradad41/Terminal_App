@@ -71,7 +71,7 @@ export class View {
     // コマンドもしくはコントロール + K が押されたとき画面をクリアする
     terminalInput.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        terminalOutput.innerHTML = ''
+        terminalOutput.innerHTML = '';
       }
     })
   }
