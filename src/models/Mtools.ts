@@ -1,10 +1,10 @@
 export class Mtools {
   static commandLineParser(CLIInputString: string): string[] {
-    return CLIInputString.split(' ')
+    return CLIInputString.trim().split(' ')
   }
 
   static appendEchoParagraph(outputDiv: HTMLDivElement, inputtextValue: string): void {
-    outputDiv.innerHTML += `<p><span class="text-pink-500">$</span> ${inputtextValue}</p>`
+    outputDiv.innerHTML += `<p><span class="text-pink-500">$</span> ${inputtextValue.trim()}</p>`
   }
 
   static appendResultParagraph(outputDiv: HTMLDivElement, isValid: boolean, message: string): void {
@@ -98,7 +98,7 @@ export class Mtools {
 
   // 3つ目の引数がすべて数字であるか調べる
   private static allStringElementsOfArrayContainNumbers(inputArr: string[]): boolean {
-    const regex: RegExp = /^\d+$/
+    const regex: RegExp = /^-?\d+(\.\d+)?$/
     return inputArr.every((element: string) => regex.test(element))
   }
 
@@ -169,6 +169,7 @@ export class Mtools {
         break
     }
 
-    return 'Your result is: ' + result
+    const formattedResult: string = result % 1 === 0 ? result.toFixed(0) : result.toFixed(2)
+    return 'Your result is: ' + formattedResult
   }
 }
