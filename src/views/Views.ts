@@ -1,4 +1,5 @@
 import '../style.css'
+import { Mtools } from '../models/Mtools'
 
 export class View {
   public static renderMainPage() {
@@ -7,8 +8,8 @@ export class View {
 
     app!.innerHTML = `
     <div class="h-screen flex justify-center items-center bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-600">
-        <div class="flex flex-col justify-between bg-black w-2/3 h-4/5 pb-3 rounded-lg shadow-xl overflow-hidden">
-            <div>
+        <div class="flex flex-col justify-between bg-black w-2/3 h-4/5 pb-3 rounded-xl shadow-xl overflow-hidden">
+            <div class="h-[64rem]">
                 <div class="flex justify-between items-center bg-gray-600 px-4 py-[0.3rem]">
                     <div class="flex justify-start items-center">
                         <div class="flex space-x-2">
@@ -20,9 +21,9 @@ export class View {
                     <p>Terminal</p>
                     <div class="w-11"></div>
                 </div>
-                <div id="terminalOutput" class="text-start my-4 py-3 px-6 space-y-1 overflow-y-scroll font-mono"></div>
+                <div id="terminalOutput" class="text-start my-4 px-6 space-y-1 overflow-y-scroll font-mono h-[40rem]"></div>
             </div>
-            <input id="terminalInput" class="bg-gray-700 rounded-lg px-4 py-2 mx-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" type="text" placeholder="Type any command...">
+            <input id="terminalInput" class="bg-gray-700 rounded-lg px-4 py-2 mx-3 mb-1 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" type="text" placeholder="Type any command...">
         </div>
     </div>
     `
@@ -37,10 +38,23 @@ export class View {
       switch (event.key) {
         case 'Enter':
           if (terminalInput.value !== '') {
-            terminalOutput.innerHTML += `<p>\$ ${terminalInput.value}</p>`
+            Mtools.appendEchoParagraph(terminalOutput, terminalInput.value)
+
             if (terminalInput.value !== commandHistory[commandHistory.length - 1]) {
               commandHistory.push(terminalInput.value)
             }
+
+            const parsedStringInputArray = Mtools.commandLineParser(terminalInput.value)
+            const validatorResponse = Mtools.parsedArrayValidator(parsedStringInputArray)
+
+            if (!validatorResponse['isValid']) {
+              Mtools.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
+            } else {
+              const message: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputArray)
+              Mtools.appendResultParagraph(terminalOutput, true, message)
+            }
+          } else {
+            Mtools.appendEchoParagraph(terminalOutput, terminalInput.value)
           }
           terminalInput.value = ''
           commandIndex = 0
@@ -71,8 +85,15 @@ export class View {
     // コマンドもしくはコントロール + K が押されたとき画面をクリアする
     terminalInput.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        terminalOutput.innerHTML = '';
+        terminalOutput.innerHTML = ''
       }
     })
+
+    // 要素が追加された後に自動スクロールを実行する
+    terminalOutput.addEventListener('DOMNodeInserted', scrollToBottom)
+
+    function scrollToBottom() {
+      terminalOutput.scrollTop = terminalOutput.scrollHeight
+    }
   }
 }
