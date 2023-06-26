@@ -45,7 +45,10 @@ export class View {
               cmdHistory.push(terminalInput.value)
             }
 
-            const parsedStringInputArray = FileSystemConsole.commandLineParser(terminalInput.value)
+            const parsedStringInputArr = FileSystemConsole.commandLineParser(terminalInput.value)
+            console.log(parsedStringInputArr)
+            const parsedStringInputArray = Mtools.commandLineParser(terminalInput.value)
+            console.log(parsedStringInputArray)
             const validatorResponse = Mtools.parsedArrayValidator(parsedStringInputArray)
 
             if (!validatorResponse['isValid']) {
@@ -93,10 +96,8 @@ export class View {
     })
 
     // 要素が追加された後に自動スクロールを実行する
-    terminalOutput.addEventListener('DOMNodeInserted', scrollToBottom)
-
-    function scrollToBottom() {
+    terminalOutput.addEventListener('DOMNodeInserted', () => {
       terminalOutput.scrollTop = terminalOutput.scrollHeight
-    }
+    })
   }
 }
