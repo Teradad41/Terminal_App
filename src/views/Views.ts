@@ -1,5 +1,7 @@
 import '../style.css'
 import { Mtools } from '../models/Mtools'
+import { CommandHistory } from '../models/CommandHistory'
+import { FileSystemConsole } from '../models/FileSystemConsole'
 
 export class View {
   public static renderMainPage() {
@@ -29,8 +31,7 @@ export class View {
     `
     const terminalInput = app.querySelector('#terminalInput') as HTMLInputElement
     const terminalOutput = app.querySelector('#terminalOutput') as HTMLDivElement
-    const commandHistory: string[] = []
-    let commandIndex: number = 0
+    const cmdHistory = new CommandHistory()
 
     if (!terminalInput || !terminalOutput) return
 
@@ -38,13 +39,13 @@ export class View {
       switch (event.key) {
         case 'Enter':
           if (terminalInput.value !== '') {
-            Mtools.appendEchoParagraph(terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
 
-            if (terminalInput.value !== commandHistory[commandHistory.length - 1]) {
-              commandHistory.push(terminalInput.value)
+            if (terminalInput.value !== cmdHistory.getCommandHistory(cmdHistory.getLength() - 1)) {
+              cmdHistory.push(terminalInput.value)
             }
 
-            const parsedStringInputArray = Mtools.commandLineParser(terminalInput.value)
+            const parsedStringInputArray = FileSystemConsole.commandLineParser(terminalInput.value)
             const validatorResponse = Mtools.parsedArrayValidator(parsedStringInputArray)
 
             if (!validatorResponse['isValid']) {
@@ -57,23 +58,25 @@ export class View {
             Mtools.appendEchoParagraph(terminalOutput, terminalInput.value)
           }
           terminalInput.value = ''
-          commandIndex = 0
+          cmdHistory.setCommandIndex(0)
           event.preventDefault()
           break
         case 'ArrowUp':
-          if (commandIndex < commandHistory.length) {
-            commandIndex++
-            terminalInput.value = commandHistory[commandHistory.length - commandIndex] || ''
+          if (cmdHistory.getCommandIndex() < cmdHistory.getLength()) {
+            cmdHistory.increment()
+            terminalInput.value =
+              cmdHistory.getCommandHistory(cmdHistory.getLength() - cmdHistory.getCommandIndex()) || ''
             event.preventDefault()
           }
           break
         case 'ArrowDown':
-          if (commandIndex > 1) {
-            commandIndex--
-            terminalInput.value = commandHistory[commandHistory.length - commandIndex] || ''
+          if (cmdHistory.getCommandIndex() > 1) {
+            cmdHistory.decrement()
+            terminalInput.value =
+              cmdHistory.getCommandHistory(cmdHistory.getLength() - cmdHistory.getCommandIndex()) || ''
             event.preventDefault()
           } else {
-            commandIndex = 0
+            cmdHistory.setCommandIndex(0)
             terminalInput.value = ''
           }
           break
