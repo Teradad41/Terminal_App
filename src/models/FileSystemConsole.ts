@@ -1,11 +1,13 @@
 import { commands } from '../config'
+import { CommandLineInput } from '../config'
+import { ValidatorResponse } from '../config'
 
 export class FileSystemConsole {
-  static commandLineParser(CLIInputString: string): { command: string; commandOption: string[]; args: string[] } {
-    const preParsedInputArray: string[] = CLIInputString.trim().split(' ')
+  static commandLineParser(cliInputString: string): CommandLineInput {
+    const preParsedInputArray: string[] = cliInputString.trim().split(' ')
     const command: string = preParsedInputArray[0]
-    let commandOption: string[] = []
-    let args: string[] = []
+    const commandOption: string[] = []
+    const args: string[] = []
 
     preParsedInputArray.slice(1).forEach((element: string) => {
       if (element.charAt(0) === '-') {
@@ -17,11 +19,35 @@ export class FileSystemConsole {
       }
     })
 
-    return { command: command, commandOption: commandOption, args: args }
+    return { command, commandOption, args }
+  }
+
+  static parsedArrayValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
+    // 最初にすべてのコマンドのエラーをチェック
+    let validatorResponse: ValidatorResponse = FileSystemConsole.universalValidator(parsedStringInputObj)
+    if (!validatorResponse['isValid']) return validatorResponse
+
+    // 各コマンドに対して固有のエラーをチェック
+    // validatorResponse = FileSystemConsole.commandArgumentsValidator(parsedStringInputArray.slice(1, 3))
+    if (!validatorResponse['isValid']) return validatorResponse
+
+    return { isValid: true, errorMessage: '' }
+  }
+
+  private static universalValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
+    if (!commands.includes(parsedStringInputObj.command)) {
+      return { isValid: false, errorMessage: `unsupported command ${parsedStringInputObj.command}` }
+    }
+
+    return { isValid: true, errorMessage: '' }
+  }
+
+  private static commandArgumentsValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
+    return { isValid: true, errorMessage: '' }
   }
 
   static appendEchoParagraph(outputDiv: HTMLDivElement, inputtextValue: string): void {
-    outputDiv.innerHTML += `<p><span class="text-pink-500">$</span> ${inputtextValue.trim()}</p>`
+    outputDiv.innerHTML += `<p><span class="text-green-600">$</span> ${inputtextValue.trim()}</p>`
   }
 
   static appendResultParagraph(outputDiv: HTMLDivElement, isValid: boolean, message: string): void {
@@ -41,27 +67,5 @@ export class FileSystemConsole {
         <span class="${promptColor}">${promptName}</span>: ${message}
       </p>
     `
-  }
-
-  // static parsedArrayValidator(parsedStringInputArray: string[]): { isValid: boolean; errorMessage: string } {
-  // 最初にすべてのコマンドのエラーをチェック
-  // let validatorResponse: { isValid: boolean; errorMessage: string } =
-  // FileSystemConsole.universalValidator(parsedStringInputArray)
-  // if (!validatorResponse['isValid']) return validatorResponse
-
-  // 各コマンドに対して固有のエラーをチェック
-  // validatorResponse = FileSystemConsole.commandArgumentsValidator(parsedStringInputArray.slice(1, 3))
-  // if (!validatorResponse['isValid']) return validatorResponse
-
-  // return { isValid: true, errorMessage: '' }
-  // }
-
-  private static universalValidator(): { isValid: boolean; errorMessage: string } {
-    // if (!commands.includes(command))
-    return { isValid: true, errorMessage: '' }
-  }
-
-  private static commandArgumentsValidator(): { isValid: boolean; errorMessage: string } {
-    return { isValid: true, errorMessage: '' }
   }
 }

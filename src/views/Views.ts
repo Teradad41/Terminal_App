@@ -1,5 +1,4 @@
 import '../style.css'
-import { Mtools } from '../models/Mtools'
 import { CommandHistory } from '../models/CommandHistory'
 import { FileSystemConsole } from '../models/FileSystemConsole'
 
@@ -9,7 +8,7 @@ export class View {
     if (!app) return
 
     app!.innerHTML = `
-    <div class="h-screen flex justify-center items-center bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-600">
+    <div class="h-screen flex justify-center items-center bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600">
         <div class="flex flex-col justify-between bg-black w-2/3 h-4/5 pb-3 rounded-xl shadow-xl overflow-hidden">
             <div class="h-[64rem]">
                 <div class="flex justify-between items-center bg-gray-600 px-4 py-[0.3rem]">
@@ -45,20 +44,18 @@ export class View {
               cmdHistory.push(terminalInput.value)
             }
 
-            const parsedStringInputArr = FileSystemConsole.commandLineParser(terminalInput.value)
-            console.log(parsedStringInputArr)
-            const parsedStringInputArray = Mtools.commandLineParser(terminalInput.value)
-            console.log(parsedStringInputArray)
-            const validatorResponse = Mtools.parsedArrayValidator(parsedStringInputArray)
+            const parsedStringInputObj = FileSystemConsole.commandLineParser(terminalInput.value)
+            const validatorResponse = FileSystemConsole.parsedArrayValidator(parsedStringInputObj)
+            console.log(validatorResponse)
 
             if (!validatorResponse['isValid']) {
-              Mtools.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
+              FileSystemConsole.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
             } else {
-              const message: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputArray)
-              Mtools.appendResultParagraph(terminalOutput, true, message)
+              // const message: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputObj)
+              // FileSystemConsole.appendResultParagraph(terminalOutput, true, message)
             }
           } else {
-            Mtools.appendEchoParagraph(terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
           }
           terminalInput.value = ''
           cmdHistory.setCommandIndex(0)
