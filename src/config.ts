@@ -10,3 +10,5 @@ export interface ValidatorResponse {
   isValid: boolean
   errorMessage: string
 }
+
+export const singleArgumentCommands: string[] = ['ls', 'rm', 'mkdir', 'touch', 'print', 'setContent', 'help']

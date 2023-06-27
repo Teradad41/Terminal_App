@@ -9,8 +9,8 @@ export class View {
 
     app!.innerHTML = `
     <div class="h-screen flex justify-center items-center bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600">
-        <div class="flex flex-col justify-between bg-black w-2/3 h-4/5 pb-3 rounded-xl shadow-xl overflow-hidden">
-            <div class="h-[64rem]">
+        <div class="flex flex-col justify-between bg-black w-2/3 h-[85%] rounded-xl shadow-xl overflow-hidden">
+            <div class="h-[66rem]">
                 <div class="flex justify-between items-center bg-gray-600 px-4 py-[0.3rem]">
                     <div class="flex justify-start items-center">
                         <div class="flex space-x-2">
@@ -19,12 +19,12 @@ export class View {
                             <div class="w-3 h-3 bg-green-500 rounded-full cursor-pointer"></div>
                         </div>
                     </div>
-                    <p>Terminal</p>
-                    <div class="w-11"></div>
-                </div>
-                <div id="terminalOutput" class="text-start my-4 px-6 space-y-1 overflow-y-scroll font-mono h-[40rem]"></div>
+                <p>Terminal</p>
+                <div class="w-11"></div>
+              </div>
+              <div id="terminalOutput" class="text-start my-4 px-6 space-y-1 overflow-y-scroll text-lg font-mono h-[40rem]"></div>
             </div>
-            <input id="terminalInput" class="bg-gray-700 rounded-lg px-4 py-2 mx-3 mb-1 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" type="text" placeholder="Type any command...">
+            <input id="terminalInput" class="bg-gray-700 rounded-lg px-4 py-2 mx-3 mb-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500" type="text" placeholder="Type any command...">
         </div>
     </div>
     `
