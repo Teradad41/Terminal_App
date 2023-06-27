@@ -46,13 +46,12 @@ export class View {
 
             const parsedStringInputObj = FileSystemConsole.commandLineParser(terminalInput.value)
             const validatorResponse = FileSystemConsole.parsedArrayValidator(parsedStringInputObj)
-            console.log(validatorResponse)
 
             if (!validatorResponse['isValid']) {
               FileSystemConsole.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
             } else {
-              // const message: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputObj)
-              // FileSystemConsole.appendResultParagraph(terminalOutput, true, message)
+              // const result: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputObj)
+              // FileSystemConsole.appendResultParagraph(terminalOutput, true, result)
             }
           } else {
             FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)

@@ -1,10 +1,10 @@
-import { commands } from '../config'
+import { config } from '../config'
 import { CommandLineInput } from '../config'
 import { ValidatorResponse } from '../config'
 
 export class FileSystemConsole {
   static commandLineParser(cliInputString: string): CommandLineInput {
-    const preParsedInputArray: string[] = cliInputString.trim().split(' ')
+    const preParsedInputArray: string[] = cliInputString.trim().split(/\s+/)
     const command: string = preParsedInputArray[0]
     const commandOption: string[] = []
     const args: string[] = []
@@ -28,14 +28,14 @@ export class FileSystemConsole {
     if (!validatorResponse['isValid']) return validatorResponse
 
     // 各コマンドに対して固有のエラーをチェック
-    // validatorResponse = FileSystemConsole.commandArgumentsValidator(parsedStringInputArray.slice(1, 3))
+    validatorResponse = FileSystemConsole.commandArgumentsValidator(parsedStringInputObj)
     if (!validatorResponse['isValid']) return validatorResponse
 
     return { isValid: true, errorMessage: '' }
   }
 
   private static universalValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
-    if (!commands.includes(parsedStringInputObj.command)) {
+    if (!config.commands.includes(parsedStringInputObj.command)) {
       return { isValid: false, errorMessage: `unsupported command ${parsedStringInputObj.command}` }
     }
 
@@ -43,6 +43,30 @@ export class FileSystemConsole {
   }
 
   private static commandArgumentsValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
+    if (config.noOptionCommands.includes(parsedStringInputObj.command)) {
+      if (parsedStringInputObj.commandOption.length !== 0) {
+        return { isValid: false, errorMessage: `command ${parsedStringInputObj.command} does not take options` }
+      }
+    }
+
+    if (config.noArgumentCommands.includes(parsedStringInputObj.command)) {
+      if (parsedStringInputObj.args.length !== 0) {
+        return {
+          isValid: false,
+          errorMessage: `commands ${parsedStringInputObj.command} does not take arguments`,
+        }
+      }
+    }
+
+    if (config.singleArgumentCommands.includes(parsedStringInputObj.command)) {
+      if (parsedStringInputObj.args.length !== 1) {
+        return {
+          isValid: false,
+          errorMessage: `command ${parsedStringInputObj.command} requires exactly 1 argument`,
+        }
+      }
+    }
+
     return { isValid: true, errorMessage: '' }
   }
 

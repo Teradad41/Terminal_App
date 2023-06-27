@@ -2,7 +2,7 @@ export class Help {
   static getAllCommandHelp(): string {
     return `
         <p>the supported commands in this app are:</p>
-        <p>pwd</p>
+        <p>pwd []</p>
         <p>ls [-option] [file or directory path]</p>
         <p>touch [filepath]</p>
         <p>mkdir [directorypath]</p>
@@ -10,6 +10,7 @@ export class Help {
         <p>rm [filepath]</p>
         <p>print [filepath]</p>
         <p>setContent [filepath]</p>
+        <p>clear []</p>
         <p>help [command]</p>
         `
   }
@@ -67,6 +68,13 @@ export class Help {
     return `
         <p>setCount [filename]:</p>
         <p>与えられたfileNameの.content値をカレントディレクトリに設定します。</p>
+    `
+  }
+
+  static getClearDiscription(): string {
+    return `
+      <p>clear []:</p>
+      <p>ターミナル画面をクリアします。</p>
     `
   }
 }
