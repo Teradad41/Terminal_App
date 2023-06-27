@@ -1,6 +1,7 @@
 import { config } from '../config'
 import { CommandLineInput } from '../config'
 import { ValidatorResponse } from '../config'
+import { FileSystem } from './FileSystem'
 
 export class FileSystemConsole {
   static commandLineParser(cliInputString: string): CommandLineInput {
@@ -68,6 +69,21 @@ export class FileSystemConsole {
     }
 
     return { isValid: true, errorMessage: '' }
+  }
+
+  static evaluatedResultsStringFromParsedCLIObj(parsedStringInputObj: CommandLineInput, fs: FileSystem): string {
+    const command: string = parsedStringInputObj.command
+    let res: string = ''
+
+    switch (command) {
+      case 'pwd':
+        res = fs.pwd()
+        break
+      default:
+        break
+    }
+
+    return res
   }
 
   static appendEchoParagraph(outputDiv: HTMLDivElement, inputtextValue: string): void {

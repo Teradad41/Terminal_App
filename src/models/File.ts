@@ -1,17 +1,17 @@
 import { NodeItem } from './NodeItem'
 
 export class File extends NodeItem {
-  textContent: string
+  textData: string
   constructor(name: string) {
     super(name, 'file')
-    this.textContent = ''
+    this.textData = ''
   }
 
-  getTextContent(): string {
-    return this.textContent
+  getTextData(): string {
+    return this.textData
   }
 
-  setTextContent(textContent: string): void {
-    this.textContent = textContent
+  setTextData(textData: string): void {
+    this.textData = textData
   }
 }

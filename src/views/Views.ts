@@ -1,9 +1,10 @@
 import '../style.css'
-import { CommandHistory } from '../models/CommandHistory'
+import { FileSystem } from '../models/FileSystem'
 import { FileSystemConsole } from '../models/FileSystemConsole'
+import { CommandHistory } from '../models/CommandHistory'
 
 export class View {
-  public static renderMainPage() {
+  public static renderMainPage(fs: FileSystem, cmdHistory: CommandHistory) {
     const app = document.querySelector<HTMLDivElement>('#app')
     if (!app) return
 
@@ -30,36 +31,13 @@ export class View {
     `
     const terminalInput = app.querySelector('#terminalInput') as HTMLInputElement
     const terminalOutput = app.querySelector('#terminalOutput') as HTMLDivElement
-    const cmdHistory = new CommandHistory()
 
     if (!terminalInput || !terminalOutput) return
 
-    terminalInput.addEventListener('keydown', (event) => {
+    terminalInput.addEventListener('keyup', (event) => submitCliInput(event))
+
+    function submitCliInput(event: KeyboardEvent) {
       switch (event.key) {
-        case 'Enter':
-          if (terminalInput.value !== '') {
-            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
-
-            if (terminalInput.value !== cmdHistory.getCommandHistory(cmdHistory.getLength() - 1)) {
-              cmdHistory.push(terminalInput.value)
-            }
-
-            const parsedStringInputObj = FileSystemConsole.commandLineParser(terminalInput.value)
-            const validatorResponse = FileSystemConsole.parsedArrayValidator(parsedStringInputObj)
-
-            if (!validatorResponse['isValid']) {
-              FileSystemConsole.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
-            } else {
-              // const result: string = Mtools.evaluatedResultsStringFromParsedCLIArray(parsedStringInputObj)
-              // FileSystemConsole.appendResultParagraph(terminalOutput, true, result)
-            }
-          } else {
-            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
-          }
-          terminalInput.value = ''
-          cmdHistory.setCommandIndex(0)
-          event.preventDefault()
-          break
         case 'ArrowUp':
           if (cmdHistory.getCommandIndex() < cmdHistory.getLength()) {
             cmdHistory.increment()
@@ -79,10 +57,34 @@ export class View {
             terminalInput.value = ''
           }
           break
+        case 'Enter':
+          if (terminalInput.value !== '') {
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
+
+            if (terminalInput.value !== cmdHistory.getCommandHistory(cmdHistory.getLength() - 1)) {
+              cmdHistory.push(terminalInput.value)
+            }
+
+            const parsedStringInputObj = FileSystemConsole.commandLineParser(terminalInput.value)
+            const validatorResponse = FileSystemConsole.parsedArrayValidator(parsedStringInputObj)
+
+            if (!validatorResponse['isValid']) {
+              FileSystemConsole.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
+            } else {
+              const result: string = FileSystemConsole.evaluatedResultsStringFromParsedCLIObj(parsedStringInputObj, fs)
+              FileSystemConsole.appendResultParagraph(terminalOutput, true, result)
+            }
+          } else {
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
+          }
+          terminalInput.value = ''
+          cmdHistory.setCommandIndex(0)
+          event.preventDefault()
+          break
         default:
           break
       }
-    })
+    }
 
     // コマンドもしくはコントロール + K が押されたとき画面をクリアする
     terminalInput.addEventListener('keydown', (e) => {
