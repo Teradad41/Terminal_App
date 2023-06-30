@@ -8,12 +8,12 @@ export class FileSystem {
     this.currentDir = this.rootDir
   }
 
-  getCurrentDir(): Dir {
-    return this.currentDir
+  getCurrentDir(): string {
+    return "/"
   }
 
   pwd(): string {
-    return 'command pwd'
+    return '/'
   }
 
   ls() {}

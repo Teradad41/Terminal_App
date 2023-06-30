@@ -59,7 +59,7 @@ export class View {
           break
         case 'Enter':
           if (terminalInput.value !== '') {
-            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(fs, terminalOutput, terminalInput.value)
 
             if (terminalInput.value !== cmdHistory.getCommandHistory(cmdHistory.getLength() - 1)) {
               cmdHistory.push(terminalInput.value)
@@ -75,7 +75,7 @@ export class View {
               FileSystemConsole.appendResultParagraph(terminalOutput, true, result)
             }
           } else {
-            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(fs, terminalOutput, terminalInput.value)
           }
           terminalInput.value = ''
           cmdHistory.setCommandIndex(0)

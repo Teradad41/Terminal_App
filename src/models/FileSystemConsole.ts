@@ -44,26 +44,28 @@ export class FileSystemConsole {
   }
 
   private static commandArgumentsValidator(parsedStringInputObj: CommandLineInput): ValidatorResponse {
-    if (config.noOptionCommands.includes(parsedStringInputObj.command)) {
+    const command: string = parsedStringInputObj.command
+
+    if (config.noOptionCommands.includes(command)) {
       if (parsedStringInputObj.commandOption.length !== 0) {
-        return { isValid: false, errorMessage: `command ${parsedStringInputObj.command} does not take options` }
+        return { isValid: false, errorMessage: `command ${command} does not take options` }
       }
     }
 
-    if (config.noArgumentCommands.includes(parsedStringInputObj.command)) {
+    if (config.noArgumentCommands.includes(command)) {
       if (parsedStringInputObj.args.length !== 0) {
         return {
           isValid: false,
-          errorMessage: `commands ${parsedStringInputObj.command} does not take arguments`,
+          errorMessage: `commands ${command} does not take arguments`,
         }
       }
     }
 
-    if (config.singleArgumentCommands.includes(parsedStringInputObj.command)) {
+    if (config.singleArgumentCommands.includes(command)) {
       if (parsedStringInputObj.args.length !== 1) {
         return {
           isValid: false,
-          errorMessage: `command ${parsedStringInputObj.command} requires exactly 1 argument`,
+          errorMessage: `command ${command} requires exactly 1 argument`,
         }
       }
     }
@@ -86,8 +88,8 @@ export class FileSystemConsole {
     return res
   }
 
-  static appendEchoParagraph(outputDiv: HTMLDivElement, inputtextValue: string): void {
-    outputDiv.innerHTML += `<p><span class="text-green-600">$</span> ${inputtextValue.trim()}</p>`
+  static appendEchoParagraph(fs: FileSystem, outputDiv: HTMLDivElement, inputtextValue: string): void {
+    outputDiv.innerHTML += `<p>${fs.getCurrentDir()} <span class="text-green-600">$</span> ${inputtextValue.trim()}</p>`
   }
 
   static appendResultParagraph(outputDiv: HTMLDivElement, isValid: boolean, message: string): void {
@@ -104,7 +106,7 @@ export class FileSystemConsole {
 
     outputDiv.innerHTML += `
       <p class="pb-5">
-        <span class="${promptColor}">${promptName}</span>: ${message}
+        <span class="${promptColor}">${promptName}</span> ${message}
       </p>
     `
   }

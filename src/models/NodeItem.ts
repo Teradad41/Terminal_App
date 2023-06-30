@@ -30,4 +30,36 @@ export class NodeItem {
   hasChildren(): boolean {
     return this.children !== null
   }
+
+  getName(): string {
+    return this.name
+  }
+
+  setName(name: string): void {
+    this.name = name
+  }
+
+  getType(): string {
+    return this.type
+  }
+
+  getParent(): NodeItem | null {
+    return this.parent
+  }
+
+  getChildren(): NodeItem[] | null {
+    return this.children
+  }
+
+  getCreatedTime(): string {
+    return this.createdTime
+  }
+
+  getModifiedTime(): string {
+    return this.modifiedTime
+  }
+
+  setModifiedTime(modifiedTime: string): void {
+    this.modifiedTime = modifiedTime
+  }
 }
