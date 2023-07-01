@@ -83,14 +83,24 @@ export class FileSystemConsole {
       case 'pwd':
         res = fs.pwd()
         break
+      case 'ls':
+        break
+      case 'touch':
+        break
+      case 'mkdir':
+        break
+      case 'cd':
+        break
+      case 'rm':
+        break
+      case 'print':
+        break
+      case 'setContent':
+        break
+      case 'clear':
+        break
       case 'help':
-        if (args.length > 1) {
-          res = `<p><span class="text-red-500">Error</span>: command [${command}] requires exactly 1 argument</p>`
-        } else if (args.length === 0) {
-          res = fs.help()
-        } else if (args.length === 1) {
-          res = Help.getCommandDescription(args[0])
-        }
+        res = Help.getCommandDescription(args, fs)
         break
       default:
         break

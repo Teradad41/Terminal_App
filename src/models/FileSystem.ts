@@ -19,6 +19,20 @@ export class FileSystem {
 
   ls() {}
 
+  touch() {}
+
+  mkdir() {}
+
+  cd() {}
+
+  rm() {}
+
+  print() {}
+
+  setContent() {}
+
+  clear() {}
+
   help(): string {
     return Help.getAllCommandHelp()
   }
