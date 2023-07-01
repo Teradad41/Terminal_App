@@ -2,6 +2,7 @@ import { config } from '../config'
 import { CommandLineInput } from '../config'
 import { ValidatorResponse } from '../config'
 import { FileSystem } from './FileSystem'
+import { Help } from './Help'
 
 export class FileSystemConsole {
   static commandLineParser(cliInputString: string): CommandLineInput {
@@ -75,11 +76,21 @@ export class FileSystemConsole {
 
   static evaluatedResultsStringFromParsedCLIObj(parsedStringInputObj: CommandLineInput, fs: FileSystem): string {
     const command: string = parsedStringInputObj.command
+    const args: string[] = parsedStringInputObj.args
     let res: string = ''
 
     switch (command) {
       case 'pwd':
         res = fs.pwd()
+        break
+      case 'help':
+        if (args.length > 1) {
+          res = `<p><span class="text-red-500">Error</span>: command [${command}] requires exactly 1 argument</p>`
+        } else if (args.length === 0) {
+          res = fs.help()
+        } else if (args.length === 1) {
+          res = Help.getCommandDescription(args[0])
+        }
         break
       default:
         break
@@ -88,26 +99,19 @@ export class FileSystemConsole {
     return res
   }
 
-  static appendEchoParagraph(fs: FileSystem, outputDiv: HTMLDivElement, inputtextValue: string): void {
-    outputDiv.innerHTML += `<p>${fs.getCurrentDir()} <span class="text-green-600">$</span> ${inputtextValue.trim()}</p>`
+  static appendEchoParagraph(outputDiv: HTMLDivElement, inputtextValue: string): void {
+    outputDiv.innerHTML += `<p><span class="text-green-600">$</span> ${inputtextValue.trim()}</p>`
   }
 
   static appendResultParagraph(outputDiv: HTMLDivElement, isValid: boolean, message: string): void {
-    let promptName: string
-    let promptColor: string
-
-    if (isValid) {
-      promptName = ''
-      promptColor = 'text-green-300'
-    } else {
-      promptName = 'Error'
-      promptColor = 'text-red-500'
-    }
+    const promptName: string = isValid ? '' : 'Error'
+    const semi: string = isValid ? '' : ':'
+    const promptColor: string = isValid ? 'text-green-400' : 'text-red-500'
 
     outputDiv.innerHTML += `
-      <p class="pb-5">
-        <span class="${promptColor}">${promptName}</span> ${message}
-      </p>
-    `
+    <div class="pb-3">
+      <span class="${promptColor}">${promptName}</span>${semi} ${message}
+    </div>
+  `
   }
 }

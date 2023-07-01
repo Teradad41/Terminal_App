@@ -1,4 +1,5 @@
 import { Dir } from './Dir'
+import { Help } from './Help'
 
 export class FileSystem {
   rootDir: Dir
@@ -9,12 +10,16 @@ export class FileSystem {
   }
 
   getCurrentDir(): string {
-    return "/"
+    return '/home'
   }
 
   pwd(): string {
-    return '/'
+    return ''
   }
 
   ls() {}
+
+  help(): string {
+    return Help.getAllCommandHelp()
+  }
 }

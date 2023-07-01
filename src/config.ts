@@ -1,7 +1,7 @@
 export const config = {
   commands: ['touch', 'ls', 'cd', 'mkdir', 'pwd', 'print', 'setContent', 'rm', 'help', 'clear'],
   noArgumentCommands: ['pwd', 'clear'],
-  singleArgumentCommands: ['cd', 'rm', 'mkdir', 'touch', 'print', 'setContent', 'help'],
+  singleArgumentCommands: ['cd', 'rm', 'mkdir', 'touch', 'print', 'setContent'],
   noOptionCommands: ['touch', 'cd', 'pwd', 'print', 'setContent', 'help', 'clear'],
 }
 

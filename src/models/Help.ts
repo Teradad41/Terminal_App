@@ -1,80 +1,69 @@
 export class Help {
   static getAllCommandHelp(): string {
     return `
-        <p>the supported commands in this app are:</p>
-        <p>pwd []</p>
-        <p>ls [-option] [file or directory path]</p>
-        <p>touch [filepath]</p>
-        <p>mkdir [directorypath]</p>
-        <p>cd [directorypath]</p>
-        <p>rm [filepath]</p>
-        <p>print [filepath]</p>
-        <p>setContent [filepath]</p>
-        <p>clear []</p>
-        <p>help [command]</p>
+      <p>the supported commands in this app are:</p>
+      <p><span class="text-blue-500">pwd</span> []</p>
+      <p><span class="text-blue-500">ls</span> [-option] [file or directory path]</p>
+      <p><span class="text-blue-500">touch</span> [filepath]</p>
+      <p><span class="text-blue-500">mkdir</span> [directorypath]</p>
+      <p><span class="text-blue-500">cd</span> [directorypath]</p>
+      <p><span class="text-blue-500">rm</span> [filepath]</p>
+      <p><span class="text-blue-500">print</span> [filepath]</p>
+      <p><span class="text-blue-500">setContent</span> [filepath]</p>
+      <p><span class="text-blue-500">clear</span> []</p>
+      <p><span class="text-blue-500">help</span> [command_name]</p>
+      `
+  }
+
+  static getCommandDescription(command: string): string {
+    switch (command) {
+      case 'pwd':
+        return `
+          <p><span class="text-blue-500">pwd</span> []:</p>
+          <p>Outputs the current working directory path.</p>
         `
-  }
-
-  static getPwdDiscription(): string {
-    return `
-        <p>pwd []:</p>
-        <p>現在の作業ディレクトリのパスを出力します。</p>
-    `
-  }
-
-  static getLsDiscription(): string {
-    return `
-        <p>ls [?fileOrDirName]:</p>
-        <p>ターゲットノードがディレクトリの場合、ターゲットディレクトリノードの直下の全てのファイルリストを出力します。ターゲットノードがファイルの場合、与えられたノードのみ出力します。引数が存在しない場合、カレントディレクトリの全てのファイルリストを出力します。</p>
+      case 'ls':
+        return `
+          <p><span class="text-blue-500">ls</span> [fileOrDirName]:</p>
+          <p>If the target node is a directory, it outputs a list of all files directly under the target directory node. If the target node is a file, it only outputs the given node. If no argument is provided, it outputs a list of all files in the current directory.</p>
         `
-  }
-
-  static getTouchDiscription(): string {
-    return `
-        <p>touch [fileOrDirName]:</p>
-        <p>指定した名前のファイルをカレントディレクトリに作成します。ファイルまたはディレクトリが既に存在する場合は、ノードのdateModified値を現在の日付に更新します。</p>
-    `
-  }
-
-  static getMkdirDiscription(): string {
-    return `
-        <p>mkdir [dirName]:</p>
-        <p>与えられた名前でカレントディレクトリに新しいディレクトリを作成します。</p>
-    `
-  }
-
-  static getCdDiscription(): string {
-    return `
-        <p>cd [..| dirName]:</p>
-        <p>現在の作業ディレクトリを指定されたものに変更します。引数が指定されていない場合はホームディレクトリに、引数が'..'の場合はカレントディレクトリを親ディレクトリに、そうでない場合はカレントディレクトリをカレントディレクトリ内のdirNameに変更します。</p>
-    `
-  }
-
-  static getRmDiscription(): string {
-    return `
-        <p>rm [fileOrDirName]:</p>
-        <p>指定したfileOrDirNameのファイルまたはディレクトリをカレントディレクトリから削除します。</p>
-    `
-  }
-
-  static getPrintDiscription(): string {
-    return `
-        <p>print [filename]:</p>
-        <p>カレントディレクトリ内の指定されたfileNameのファイルの情報を表示します。</p>
-    `
-  }
-
-  static getSetCountDiscription(): string {
-    return `
-        <p>setCount [filename]:</p>
-        <p>与えられたfileNameの.content値をカレントディレクトリに設定します。</p>
-    `
-  }
-
-  static getClearDiscription(): string {
-    return `
-      <p>clear []:</p>
-      <p>ターミナル画面をクリアします。</p>
-    `
+      case 'touch':
+        return `
+          <p><span class="text-blue-500">touch</span> [fileOrDirName]:</p>
+          <p>Creates a file with the specified name in the current directory. If the file or directory already exists, it updates the dateModified value of the node to the current date.</p>
+        `
+      case 'mkdir':
+        return `
+          <p><span class="text-blue-500">mkdir</span> [dirName]:</p>
+          <p>Creates a new directory with the given name in the current directory.</p>
+        `
+      case 'cd':
+        return `
+          <p><span class="text-blue-500">cd</span> [..| dirName]:</p>
+          <p>Changes the current working directory to the specified one. If no argument is provided, it changes the current directory to the home directory. If the argument is '..', it changes the current directory to the parent directory. Otherwise, it changes the current directory to the 'dirName' within the current directory.</p>
+        `
+      case 'rm':
+        return `
+          <p><span class="text-blue-500">rm</span> [fileOrDirName]:</p>
+          <p>Deletes the specified 'fileOrDirName' file or directory from the current directory.</p>
+        `
+      case 'print':
+        return `
+          <p><span class="text-blue-500">print</span> [filename]:</p>
+          <p>Displays information about the specified 'filename' file in the current directory.</p>
+        `
+      case 'setContent':
+        return `
+          <p><span class="text-blue-500">setContent</span> [filename]:</p>
+          <p>Sets the .content value of the given 'filename' to the current directory.</p>
+        `
+      case 'clear':
+        return `
+          <p><span class="text-blue-500">clear</span> []:</p>
+          <p>Clears the terminal screen.</p>
+        `
+      default:
+        return `<p><span class="text-red-500">Error</span>: the command does not exist</p>`
+    }
   }
 }

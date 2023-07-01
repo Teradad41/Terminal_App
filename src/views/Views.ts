@@ -59,7 +59,7 @@ export class View {
           break
         case 'Enter':
           if (terminalInput.value !== '') {
-            FileSystemConsole.appendEchoParagraph(fs, terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
 
             if (terminalInput.value !== cmdHistory.getCommandHistory(cmdHistory.getLength() - 1)) {
               cmdHistory.push(terminalInput.value)
@@ -71,11 +71,11 @@ export class View {
             if (!validatorResponse['isValid']) {
               FileSystemConsole.appendResultParagraph(terminalOutput, false, validatorResponse['errorMessage'])
             } else {
-              const result: string = FileSystemConsole.evaluatedResultsStringFromParsedCLIObj(parsedStringInputObj, fs)
-              FileSystemConsole.appendResultParagraph(terminalOutput, true, result)
+              const res: string = FileSystemConsole.evaluatedResultsStringFromParsedCLIObj(parsedStringInputObj, fs)
+              FileSystemConsole.appendResultParagraph(terminalOutput, true, res)
             }
           } else {
-            FileSystemConsole.appendEchoParagraph(fs, terminalOutput, terminalInput.value)
+            FileSystemConsole.appendEchoParagraph(terminalOutput, terminalInput.value)
           }
           terminalInput.value = ''
           cmdHistory.setCommandIndex(0)
