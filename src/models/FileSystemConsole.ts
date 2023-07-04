@@ -84,18 +84,25 @@ export class FileSystemConsole {
         res = fs.pwd()
         break
       case 'ls':
+        res = fs.ls()
         break
       case 'touch':
+        res = fs.touch()
         break
       case 'mkdir':
+        res = fs.mkdir()
         break
       case 'cd':
+        res = fs.cd()
         break
       case 'rm':
+        res = fs.rm()
         break
       case 'print':
+        res = fs.print()
         break
       case 'setContent':
+        res = fs.setContent()
         break
       case 'clear':
         break

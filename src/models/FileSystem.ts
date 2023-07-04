@@ -9,29 +9,41 @@ export class FileSystem {
     this.currentDir = this.rootDir
   }
 
-  getCurrentDir(): string {
-    return '/home'
+  pwd(): string {
+    return this.currentDir.getFullPathToRootAsString()
   }
 
-  pwd(): string {
+  ls() {
     return ''
   }
 
-  ls() {}
+  touch() {
+    return ''
+  }
 
-  touch() {}
+  mkdir() {
+    return ''
+  }
 
-  mkdir() {}
+  cd() {
+    return ''
+  }
 
-  cd() {}
+  rm() {
+    return ''
+  }
 
-  rm() {}
+  print() {
+    return ''
+  }
 
-  print() {}
+  setContent() {
+    return ''
+  }
 
-  setContent() {}
-
-  clear() {}
+  clear() {
+    return ''
+  }
 
   help(): string {
     return Help.getAllCommandHelp()

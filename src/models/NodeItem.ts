@@ -57,8 +57,8 @@ export class NodeItem {
     return this.modifiedTime
   }
 
-  setModifiedTime(modifiedTime: string): void {
-    this.modifiedTime = modifiedTime
+  setModifiedTime(): void {
+    this.modifiedTime = new Date().toLocaleString()
   }
 
   getContent(): string {
@@ -93,5 +93,23 @@ export class NodeItem {
       iterator = iterator!.nextSibling
     }
     return iterator
+  }
+
+  addImmediateChild(newChildNode: NodeItem): void {
+    if (!this.hasChildren()) this.childHead = newChildNode
+    else this.getChildTail()!.nextSibling = newChildNode
+  }
+
+  getFullPathToRootAsString(): string {
+    if (this.parent === null) return '/'
+
+    let stringPath: string = this.isDir() ? this.name + '/' : this.name
+    let parentNode: NodeItem | null = this.parent;
+    while (parentNode !== null) {
+      stringPath = parentNode.getName() + "/" + stringPath
+      parentNode = parentNode.parent
+    }
+
+    return "/" + stringPath
   }
 }
