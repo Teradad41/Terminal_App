@@ -1,11 +1,11 @@
-import { Dir } from './Dir'
 import { Help } from './Help'
+import { NodeItem } from './NodeItem'
 
 export class FileSystem {
-  rootDir: Dir
-  currentDir: Dir
+  rootDir: NodeItem
+  currentDir: NodeItem
   constructor() {
-    this.rootDir = new Dir('root')
+    this.rootDir = new NodeItem('root', 'dir')
     this.currentDir = this.rootDir
   }
 
