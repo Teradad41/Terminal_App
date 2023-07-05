@@ -87,7 +87,7 @@ export class FileSystemConsole {
         res = fs.ls()
         break
       case 'touch':
-        res = fs.touch()
+        res = fs.touch(args[0])
         break
       case 'mkdir':
         res = fs.mkdir()

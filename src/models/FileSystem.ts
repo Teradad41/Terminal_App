@@ -13,11 +13,16 @@ export class FileSystem {
     return this.currentDir.getFullPathToRootAsString()
   }
 
-  ls() {
+  ls(): string {
     return ''
   }
 
-  touch() {
+  touch(stringPath: string) {
+    if (this.currentDir.hasImmediateChildWithName(stringPath)) {
+      this.currentDir.getImmediateChildWithName(stringPath)?.setModifiedTime()
+      return `1 file's date updated: ${stringPath} `
+    }
+
     return ''
   }
 

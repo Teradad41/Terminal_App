@@ -100,16 +100,33 @@ export class NodeItem {
     else this.getChildTail()!.nextSibling = newChildNode
   }
 
+  removeImmediateChildByName(childName: string): void {
+    if (!this.hasChildren()) return
+    if (this.childHead?.name === childName) {
+      this.childHead = this.childHead.nextSibling
+      return
+    }
+
+    let prevSibling: NodeItem | null = this.childHead
+    let currentSibling: NodeItem | null = this.childHead!.nextSibling
+    while (prevSibling!.name !== childName) {
+      prevSibling = currentSibling;
+      currentSibling = currentSibling!.nextSibling
+    }
+
+    prevSibling!.nextSibling = currentSibling!.nextSibling
+  }
+
   getFullPathToRootAsString(): string {
     if (this.parent === null) return '/'
 
     let stringPath: string = this.isDir() ? this.name + '/' : this.name
-    let parentNode: NodeItem | null = this.parent;
+    let parentNode: NodeItem | null = this.parent
     while (parentNode !== null) {
-      stringPath = parentNode.getName() + "/" + stringPath
+      stringPath = parentNode.getName() + '/' + stringPath
       parentNode = parentNode.parent
     }
 
-    return "/" + stringPath
+    return '/' + stringPath
   }
 }
